@@ -1,0 +1,3047 @@
+JAVA PROFILE 1.0.1, created Fri Aug 26 22:30:06 2016
+
+Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+  - Neither the name of Oracle nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=50000178, id = 200002, name="HPROF gc_finish watcher", group="system")
+THREAD START (obj=50000178, id = 200001, name="main", group="main")
+THREAD END (id = 200001)
+THREAD START (obj=50000175, id = 200003, name="DestroyJavaVM", group="main")
+THREAD END (id = 200003)
+THREAD END (id = 200002)
+TRACE 300000:
+	<empty>
+TRACE 300001:
+	java.lang.Thread.<init>(<Unknown Source>:Unknown line)
+TRACE 300002:
+	java.lang.Thread.<init>(<Unknown Source>:Unknown line)
+TRACE 300003:
+	java.lang.String.toCharArray(<Unknown Source>:Unknown line)
+	java.lang.Thread.init(<Unknown Source>:Unknown line)
+	java.lang.Thread.init(<Unknown Source>:Unknown line)
+	java.lang.Thread.<init>(<Unknown Source>:Unknown line)
+TRACE 300004:
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300005:
+	java.lang.invoke.MethodHandleImpl.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300006:
+	java.lang.invoke.MethodHandleImpl.initStatics(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300007:
+	java.lang.invoke.MemberName$Factory.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MemberName$Factory.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandleImpl.initStatics(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300008:
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300009:
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300010:
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300011:
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300012:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300013:
+	java.lang.ref.ReferenceQueue.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300014:
+	java.lang.ref.ReferenceQueue$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.ReferenceQueue$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.ReferenceQueue.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.<init>(<Unknown Source>:Unknown line)
+TRACE 300015:
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300016:
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300017:
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300018:
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300019:
+	java.lang.invoke.MethodHandleStatics.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300020:
+	java.lang.invoke.MethodHandleStatics.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300021:
+	java.lang.invoke.MethodHandleStatics$1.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandleStatics.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300022:
+	java.lang.Class$ReflectionData.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.newReflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.reflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.privateGetDeclaredFields(<Unknown Source>:Unknown line)
+TRACE 300023:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.SoftReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.newReflectionData(<Unknown Source>:Unknown line)
+TRACE 300024:
+	java.lang.Class.getDeclaredFields0(<Unknown Source>:Unknown line)
+	java.lang.Class.privateGetDeclaredFields(<Unknown Source>:Unknown line)
+	java.lang.Class.getDeclaredField(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300025:
+	java.lang.reflect.AccessibleObject.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Field.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Field.copy(<Unknown Source>:Unknown line)
+	java.lang.reflect.ReflectAccess.copyField(<Unknown Source>:Unknown line)
+TRACE 300026:
+	java.lang.invoke.MethodType.methodType(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300027:
+	java.lang.invoke.MethodType.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.methodType(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300028:
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.get(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.methodType(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300029:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.WeakReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet$WeakEntry.<init>(<Unknown Source>:Unknown line)
+TRACE 300030:
+	java.lang.invoke.MethodType.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.methodType(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300031:
+	java.lang.invoke.MethodType.checkPtype(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.checkPtypes(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+TRACE 300032:
+	java.lang.invoke.MethodType.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+TRACE 300033:
+	java.lang.invoke.MethodType.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+TRACE 300034:
+	java.lang.invoke.MethodTypeForm.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300035:
+	java.lang.invoke.MethodTypeForm.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300036:
+	java.lang.invoke.MethodTypeForm.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300037:
+	java.lang.invoke.MethodTypeForm.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.findForm(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType.makeImpl(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodTypeForm.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300038:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.WeakReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet$WeakEntry.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.add(<Unknown Source>:Unknown line)
+TRACE 300039:
+	java.util.concurrent.ConcurrentHashMap.initTable(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.add(<Unknown Source>:Unknown line)
+TRACE 300040:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodType$ConcurrentWeakInternSet.add(<Unknown Source>:Unknown line)
+TRACE 300041:
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300042:
+	java.lang.Class$ReflectionData.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.newReflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.reflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.privateGetDeclaredMethods(<Unknown Source>:Unknown line)
+TRACE 300043:
+	java.lang.Class.getDeclaredMethods0(<Unknown Source>:Unknown line)
+	java.lang.Class.privateGetDeclaredMethods(<Unknown Source>:Unknown line)
+	java.lang.Class.getDeclaredMethod(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300044:
+	java.lang.reflect.AccessibleObject.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Executable.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Method.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Method.copy(<Unknown Source>:Unknown line)
+TRACE 300045:
+	java.lang.invoke.MemberName.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MemberName.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300046:
+	java.lang.invoke.MemberName.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MemberName.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300047:
+	java.lang.invoke.LambdaForm$NamedFunction.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.LambdaForm$NamedFunction.<init>(<Unknown Source>:Unknown line)
+	java.lang.invoke.MethodHandle.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300048:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+TRACE 300049:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+TRACE 300050:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.expandCapacity(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.append(<Unknown Source>:Unknown line)
+TRACE 300051:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+TRACE 300052:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+TRACE 300053:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+TRACE 300054:
+	java.lang.Enum.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300055:
+	sun.launcher.LauncherHelper.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300056:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300057:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300058:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.makePlatformString(<Unknown Source>:Unknown line)
+TRACE 300059:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.makePlatformString(<Unknown Source>:Unknown line)
+TRACE 300060:
+	java.lang.ThreadLocal.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+TRACE 300061:
+	java.lang.ThreadLocal.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+TRACE 300062:
+	java.lang.ThreadLocal.createMap(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.setInitialValue(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.get(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.deref(<Unknown Source>:Unknown line)
+TRACE 300063:
+	java.lang.ThreadLocal$ThreadLocalMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.createMap(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.setInitialValue(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.get(<Unknown Source>:Unknown line)
+TRACE 300064:
+	java.lang.ThreadLocal$ThreadLocalMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.createMap(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.setInitialValue(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.get(<Unknown Source>:Unknown line)
+TRACE 300065:
+	java.lang.ThreadLocal$ThreadLocalMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.createMap(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.setInitialValue(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal.get(<Unknown Source>:Unknown line)
+TRACE 300066:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.WeakReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ThreadLocal$ThreadLocalMap$Entry.<init>(<Unknown Source>:Unknown line)
+TRACE 300067:
+	java.lang.StringCoding.decode(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.makePlatformString(<Unknown Source>:Unknown line)
+TRACE 300068:
+	java.lang.StringCoding$StringDecoder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringCoding$StringDecoder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.decode(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+TRACE 300069:
+	java.nio.charset.CharsetDecoder.<init>(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetDecoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.SingleByte$Decoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.MS1252.newDecoder(<Unknown Source>:Unknown line)
+TRACE 300070:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.SoftReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.set(<Unknown Source>:Unknown line)
+TRACE 300071:
+	java.lang.StringCoding$StringDecoder.decode(<Unknown Source>:Unknown line)
+	java.lang.StringCoding.decode(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+TRACE 300072:
+	java.lang.ClassLoader.getClassLoadingLock(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300073:
+	java.util.concurrent.ConcurrentHashMap.initTable(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getClassLoadingLock(<Unknown Source>:Unknown line)
+TRACE 300074:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getClassLoadingLock(<Unknown Source>:Unknown line)
+TRACE 300075:
+	java.lang.ClassLoader.getClassLoadingLock(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300076:
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300077:
+	java.net.URLClassLoader$1.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300078:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+TRACE 300079:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300080:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.String.concat(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300081:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.concat(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300082:
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300083:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.net.util.URLUtil.urlNoFragString(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300084:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.net.util.URLUtil.urlNoFragString(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300085:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.net.util.URLUtil.urlNoFragString(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300086:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.net.util.URLUtil.urlNoFragString(<Unknown Source>:Unknown line)
+TRACE 300087:
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300088:
+	sun.misc.URLClassPath$3.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300089:
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300090:
+	sun.misc.SharedSecrets.getJavaUtilZipFileAccess(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300091:
+	java.util.zip.ZipFile.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.Unsafe.ensureClassInitialized(<Unknown Source>:Unknown line)
+	sun.misc.SharedSecrets.getJavaUtilZipFileAccess(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300092:
+	java.util.zip.ZipFile$1.<init>(<Unknown Source>:Unknown line)
+	java.util.zip.ZipFile.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.Unsafe.ensureClassInitialized(<Unknown Source>:Unknown line)
+	sun.misc.SharedSecrets.getJavaUtilZipFileAccess(<Unknown Source>:Unknown line)
+TRACE 300093:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300094:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300095:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.toExternalForm(<Unknown Source>:Unknown line)
+	java.net.URL.toExternalForm(<Unknown Source>:Unknown line)
+TRACE 300096:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.toExternalForm(<Unknown Source>:Unknown line)
+	java.net.URL.toExternalForm(<Unknown Source>:Unknown line)
+TRACE 300097:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.toExternalForm(<Unknown Source>:Unknown line)
+	java.net.URL.toExternalForm(<Unknown Source>:Unknown line)
+TRACE 300098:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.toExternalForm(<Unknown Source>:Unknown line)
+	java.net.URL.toExternalForm(<Unknown Source>:Unknown line)
+TRACE 300099:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300100:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300101:
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300102:
+	java.net.Parts.<init>(<Unknown Source>:Unknown line)
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300103:
+	sun.misc.URLClassPath$Loader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300104:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300105:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300106:
+	java.nio.HeapByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.allocate(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300107:
+	java.nio.Buffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.HeapByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.allocate(<Unknown Source>:Unknown line)
+TRACE 300108:
+	java.nio.HeapCharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.allocate(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300109:
+	java.nio.Buffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.HeapCharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.allocate(<Unknown Source>:Unknown line)
+TRACE 300110:
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300111:
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300112:
+	sun.nio.cs.ThreadLocalCoders$Cache.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$1.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+TRACE 300113:
+	java.lang.ThreadLocal.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$Cache.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$1.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300114:
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300115:
+	sun.nio.cs.ThreadLocalCoders$Cache.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$2.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+TRACE 300116:
+	java.lang.ThreadLocal.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$Cache.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$2.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300117:
+	sun.nio.cs.ThreadLocalCoders$Cache.forName(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.decoderFor(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300118:
+	sun.nio.cs.FastCharsetProvider.toLower(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup2(<Unknown Source>:Unknown line)
+TRACE 300119:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.toLower(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300120:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.toLower(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+TRACE 300121:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300122:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300123:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300124:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+TRACE 300125:
+	java.lang.Class.forName0(<Unknown Source>:Unknown line)
+	java.lang.Class.forName(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300126:
+	java.lang.Class.newInstance(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup2(<Unknown Source>:Unknown line)
+TRACE 300127:
+	java.lang.Class$ReflectionData.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.newReflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.reflectionData(<Unknown Source>:Unknown line)
+	java.lang.Class.privateGetDeclaredConstructors(<Unknown Source>:Unknown line)
+TRACE 300128:
+	java.lang.reflect.AccessibleObject.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Executable.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Constructor.<init>(<Unknown Source>:Unknown line)
+	java.lang.reflect.Constructor.copy(<Unknown Source>:Unknown line)
+TRACE 300129:
+	java.lang.Class$1.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.newInstance(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.lookup(<Unknown Source>:Unknown line)
+	sun.nio.cs.FastCharsetProvider.charsetForName(<Unknown Source>:Unknown line)
+TRACE 300130:
+	sun.reflect.MagicAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.ConstructorAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.NativeConstructorAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.ReflectionFactory.newConstructorAccessor(<Unknown Source>:Unknown line)
+TRACE 300131:
+	sun.reflect.MagicAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.ConstructorAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.DelegatingConstructorAccessorImpl.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.ReflectionFactory.newConstructorAccessor(<Unknown Source>:Unknown line)
+TRACE 300132:
+	java.nio.charset.Charset.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.Unicode.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.UTF_8.<init>(<Unknown Source>:Unknown line)
+	sun.reflect.NativeConstructorAccessorImpl.newInstance0(<Unknown Source>:Unknown line)
+TRACE 300133:
+	java.nio.charset.Charset.cache(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup2(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.forName(<Unknown Source>:Unknown line)
+TRACE 300134:
+	sun.nio.cs.UTF_8.newDecoder(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$1.create(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders$Cache.forName(<Unknown Source>:Unknown line)
+	sun.nio.cs.ThreadLocalCoders.decoderFor(<Unknown Source>:Unknown line)
+TRACE 300135:
+	java.nio.charset.CharsetDecoder.<init>(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetDecoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.UTF_8$Decoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.UTF_8$Decoder.<init>(<Unknown Source>:Unknown line)
+TRACE 300136:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.unescape(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+TRACE 300137:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.unescape(<Unknown Source>:Unknown line)
+TRACE 300138:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.nio.HeapCharBuffer.toString(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.toString(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+TRACE 300139:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.nio.HeapCharBuffer.toString(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.toString(<Unknown Source>:Unknown line)
+TRACE 300140:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+TRACE 300141:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.decode(<Unknown Source>:Unknown line)
+TRACE 300142:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300143:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300144:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300145:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300146:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300147:
+	java.lang.String.toLowerCase(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.hashCode(<Unknown Source>:Unknown line)
+	java.io.File.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+TRACE 300148:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.toLowerCase(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.hashCode(<Unknown Source>:Unknown line)
+	java.io.File.hashCode(<Unknown Source>:Unknown line)
+TRACE 300149:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.toLowerCase(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.hashCode(<Unknown Source>:Unknown line)
+TRACE 300150:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.util.ArrayList.grow(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureExplicitCapacity(<Unknown Source>:Unknown line)
+TRACE 300151:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300152:
+	java.util.HashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.newNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+TRACE 300153:
+	java.util.HashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.newNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+TRACE 300154:
+	java.lang.Throwable.<init>(<Unknown Source>:Unknown line)
+	java.lang.Exception.<init>(<Unknown Source>:Unknown line)
+	java.lang.ReflectiveOperationException.<init>(<Unknown Source>:Unknown line)
+	java.lang.ClassNotFoundException.<init>(<Unknown Source>:Unknown line)
+TRACE 300155:
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300156:
+	java.lang.Throwable.<init>(<Unknown Source>:Unknown line)
+	java.lang.Exception.<init>(<Unknown Source>:Unknown line)
+	java.security.PrivilegedActionException.<init>(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+TRACE 300157:
+	java.net.URLClassLoader$1.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300158:
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+TRACE 300159:
+	sun.misc.URLClassPath$Loader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300160:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300161:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300162:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300163:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300164:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300165:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300166:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.normalize(<Unknown Source>:Unknown line)
+TRACE 300167:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.parentOrNull(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300168:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.parentOrNull(<Unknown Source>:Unknown line)
+TRACE 300169:
+	java.io.ExpiringCache$Entry.<init>(<Unknown Source>:Unknown line)
+	java.io.ExpiringCache.put(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.canonicalize(<Unknown Source>:Unknown line)
+	java.io.File.getCanonicalPath(<Unknown Source>:Unknown line)
+TRACE 300170:
+	java.util.HashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.LinkedHashMap$Entry.<init>(<Unknown Source>:Unknown line)
+	java.util.LinkedHashMap.newNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+TRACE 300171:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.parentOrNull(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.canonicalize(<Unknown Source>:Unknown line)
+TRACE 300172:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.canonicalize(<Unknown Source>:Unknown line)
+	java.io.File.getCanonicalPath(<Unknown Source>:Unknown line)
+	java.io.File.getCanonicalFile(<Unknown Source>:Unknown line)
+TRACE 300173:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.File.getCanonicalFile(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+TRACE 300174:
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300175:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300176:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300177:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300178:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300179:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300180:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.net.URLStreamHandler.parseURL(<Unknown Source>:Unknown line)
+TRACE 300181:
+	sun.net.www.ParseUtil.encodePath(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300182:
+	java.lang.String.toCharArray(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.encodePath(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300183:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.encodePath(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300184:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.ParseUtil.encodePath(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+TRACE 300185:
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	java.net.URL.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300186:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300187:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300188:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300189:
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300190:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+TRACE 300191:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+TRACE 300192:
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300193:
+	sun.misc.Resource.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+TRACE 300194:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+TRACE 300195:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300196:
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getAndVerifyPackage(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300197:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.Package.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300198:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.Package.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300199:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.lang.Package.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300200:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.lang.Package.getSystemPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+TRACE 300201:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.lang.Package.getSystemPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+TRACE 300202:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.String.concat(<Unknown Source>:Unknown line)
+	java.lang.Package.getSystemPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+TRACE 300203:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.concat(<Unknown Source>:Unknown line)
+	java.lang.Package.getSystemPackage(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getPackage(<Unknown Source>:Unknown line)
+TRACE 300204:
+	java.lang.Package.<init>(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.definePackage(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+TRACE 300205:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.definePackage(<Unknown Source>:Unknown line)
+TRACE 300206:
+	java.io.InputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+TRACE 300207:
+	java.lang.ref.Reference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.FinalReference.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Finalizer.<init>(<Unknown Source>:Unknown line)
+	java.lang.ref.Finalizer.register(<Unknown Source>:Unknown line)
+TRACE 300208:
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+TRACE 300209:
+	java.io.FileDescriptor.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+TRACE 300210:
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300211:
+	sun.misc.Resource.getBytes(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300212:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getBytes(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+TRACE 300213:
+	java.io.FileInputStream$1.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.close(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getBytes(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300214:
+	java.security.CodeSource.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300215:
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300216:
+	sun.misc.PerfCounter.<clinit>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300217:
+	sun.misc.Perf$GetPerfAction.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.<clinit>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+TRACE 300218:
+	sun.misc.Perf$GetPerfAction.run(<Unknown Source>:Unknown line)
+	sun.misc.Perf$GetPerfAction.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300219:
+	sun.misc.Perf.<init>(<Unknown Source>:Unknown line)
+	sun.misc.Perf.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.Perf$GetPerfAction.run(<Unknown Source>:Unknown line)
+	sun.misc.Perf$GetPerfAction.run(<Unknown Source>:Unknown line)
+TRACE 300220:
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+TRACE 300221:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300222:
+	sun.misc.Perf.createLong(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300223:
+	sun.security.action.GetPropertyAction.<init>(<Unknown Source>:Unknown line)
+	java.nio.Bits.unaligned(<Unknown Source>:Unknown line)
+	java.nio.DirectByteBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.Perf.createLong(<Unknown Source>:Unknown line)
+TRACE 300224:
+	java.nio.Buffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.MappedByteBuffer.<init>(<Unknown Source>:Unknown line)
+TRACE 300225:
+	java.nio.DirectByteBuffer.asLongBuffer(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300226:
+	java.nio.Buffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.LongBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.LongBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.DirectLongBufferU.<init>(<Unknown Source>:Unknown line)
+TRACE 300227:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300228:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300229:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300230:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300231:
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+TRACE 300232:
+	java.security.SecureClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+TRACE 300233:
+	java.security.Permissions.<clinit>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300234:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.security.Permissions.<clinit>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300235:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300236:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300237:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300238:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300239:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300240:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300241:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300242:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+TRACE 300243:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+TRACE 300244:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.getClassSignature(<Unknown Source>:Unknown line)
+TRACE 300245:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.security.Permissions.<clinit>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300246:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.expandCapacity(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.append(<Unknown Source>:Unknown line)
+TRACE 300247:
+	java.security.PermissionCollection.<init>(<Unknown Source>:Unknown line)
+	java.security.Permissions.<init>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300248:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.security.Permissions.<init>(<Unknown Source>:Unknown line)
+TRACE 300249:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	java.net.URL.openConnection(<Unknown Source>:Unknown line)
+TRACE 300250:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+TRACE 300251:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	java.net.URL.openConnection(<Unknown Source>:Unknown line)
+TRACE 300252:
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+	java.net.URL.openConnection(<Unknown Source>:Unknown line)
+TRACE 300253:
+	java.util.Dictionary.<init>(<Unknown Source>:Unknown line)
+	java.util.Hashtable.<init>(<Unknown Source>:Unknown line)
+	java.util.Hashtable.<init>(<Unknown Source>:Unknown line)
+	java.net.URLConnection.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300254:
+	java.util.Hashtable.<init>(<Unknown Source>:Unknown line)
+	java.util.Hashtable.<init>(<Unknown Source>:Unknown line)
+	java.net.URLConnection.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+TRACE 300255:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.URLConnection.<clinit>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+TRACE 300256:
+	java.net.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+TRACE 300257:
+	sun.net.www.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(<Unknown Source>:Unknown line)
+TRACE 300258:
+	sun.net.www.MessageHeader.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.Handler.createFileURLConnection(<Unknown Source>:Unknown line)
+TRACE 300259:
+	sun.net.www.MessageHeader.grow(<Unknown Source>:Unknown line)
+	sun.net.www.MessageHeader.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.<init>(<Unknown Source>:Unknown line)
+TRACE 300260:
+	sun.net.www.MessageHeader.grow(<Unknown Source>:Unknown line)
+	sun.net.www.MessageHeader.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.URLConnection.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.<init>(<Unknown Source>:Unknown line)
+TRACE 300261:
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+TRACE 300262:
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300263:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.replace(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300264:
+	java.security.Permission.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300265:
+	java.io.FilePermission.init(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300266:
+	java.io.FilePermission$1.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.init(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(<Unknown Source>:Unknown line)
+TRACE 300267:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission$1.run(<Unknown Source>:Unknown line)
+	java.io.FilePermission$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+TRACE 300268:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300269:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300270:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300271:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300272:
+	java.security.Permission.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300273:
+	java.io.FilePermission$1.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.init(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300274:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.io.FilePermission.init(<Unknown Source>:Unknown line)
+	java.io.FilePermission.<init>(<Unknown Source>:Unknown line)
+TRACE 300275:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.io.FilePermission.init(<Unknown Source>:Unknown line)
+TRACE 300276:
+	java.io.FilePermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300277:
+	java.io.FilePermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+TRACE 300278:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.newPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300279:
+	java.security.PermissionCollection.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermissionCollection.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300280:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	java.io.FilePermissionCollection.<init>(<Unknown Source>:Unknown line)
+TRACE 300281:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300282:
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+TRACE 300283:
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+TRACE 300284:
+	java.security.Permission.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.<init>(<Unknown Source>:Unknown line)
+	java.lang.RuntimePermission.<init>(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300285:
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(<Unknown Source>:Unknown line)
+TRACE 300286:
+	java.security.BasicPermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.add(<Unknown Source>:Unknown line)
+TRACE 300287:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300288:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300289:
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.io.ObjectStreamField.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.<clinit>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300290:
+	java.security.PermissionCollection.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermission.newPermissionCollection(<Unknown Source>:Unknown line)
+	java.security.Permissions.getPermissionCollection(<Unknown Source>:Unknown line)
+TRACE 300291:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.<init>(<Unknown Source>:Unknown line)
+TRACE 300292:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.security.BasicPermissionCollection.add(<Unknown Source>:Unknown line)
+TRACE 300293:
+	java.security.ProtectionDomain.<init>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300294:
+	java.security.ProtectionDomain$Key.<init>(<Unknown Source>:Unknown line)
+	java.security.ProtectionDomain.<init>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300295:
+	java.security.ProtectionDomain.<init>(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300296:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.getProtectionDomain(<Unknown Source>:Unknown line)
+TRACE 300297:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.checkCerts(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.preDefineClass(<Unknown Source>:Unknown line)
+TRACE 300298:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.checkCerts(<Unknown Source>:Unknown line)
+TRACE 300299:
+	java.util.concurrent.ConcurrentHashMap.initTable(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.checkCerts(<Unknown Source>:Unknown line)
+TRACE 300300:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.checkCerts(<Unknown Source>:Unknown line)
+TRACE 300301:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+TRACE 300302:
+	java.lang.ClassLoader.defineClass1(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.security.SecureClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+TRACE 300303:
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300304:
+	sun.launcher.LauncherHelper.validateMainClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300305:
+	java.lang.Class.getMethod0(<Unknown Source>:Unknown line)
+	java.lang.Class.getMethod(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.validateMainClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300306:
+	java.lang.Class$MethodArray.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.getMethod0(<Unknown Source>:Unknown line)
+	java.lang.Class.getMethod(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.validateMainClass(<Unknown Source>:Unknown line)
+TRACE 300307:
+	java.lang.Class$MethodArray.<init>(<Unknown Source>:Unknown line)
+	java.lang.Class.getMethod0(<Unknown Source>:Unknown line)
+	java.lang.Class.getMethod(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.validateMainClass(<Unknown Source>:Unknown line)
+TRACE 300308:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.getClassLoadingLock(<Unknown Source>:Unknown line)
+TRACE 300309:
+	java.lang.ClassLoader.findBootstrapClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.findBootstrapClassOrNull(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+TRACE 300310:
+	java.util.concurrent.ConcurrentHashMap.transfer(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.addCount(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+TRACE 300311:
+	java.util.concurrent.ConcurrentHashMap.transfer(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.addCount(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(<Unknown Source>:Unknown line)
+TRACE 300312:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap$ForwardingNode.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.transfer(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.addCount(<Unknown Source>:Unknown line)
+TRACE 300313:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.transfer(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.addCount(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+TRACE 300314:
+	java.util.concurrent.ConcurrentHashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.transfer(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.addCount(<Unknown Source>:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.putVal(<Unknown Source>:Unknown line)
+TRACE 300315:
+	com.company.NavApp.<init>(NavApp.java:16)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300316:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:298)
+	com.company.NavApp.<init>(NavApp.java:27)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300317:
+	java.io.OutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+TRACE 300318:
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:299)
+TRACE 300319:
+	java.io.FileDescriptor.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+TRACE 300320:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:299)
+TRACE 300321:
+	java.nio.charset.Charset.cache(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup2(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.lookup(<Unknown Source>:Unknown line)
+	java.nio.charset.Charset.isSupported(<Unknown Source>:Unknown line)
+TRACE 300322:
+	java.nio.charset.CharsetEncoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.SingleByte$Encoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.MS1252.newEncoder(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.<init>(<Unknown Source>:Unknown line)
+TRACE 300323:
+	java.nio.charset.CharsetEncoder.<init>(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetEncoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.SingleByte$Encoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.MS1252.newEncoder(<Unknown Source>:Unknown line)
+TRACE 300324:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetEncoder.replaceWith(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetEncoder.<init>(<Unknown Source>:Unknown line)
+	java.nio.charset.CharsetEncoder.<init>(<Unknown Source>:Unknown line)
+TRACE 300325:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.forOutputStreamWriter(<Unknown Source>:Unknown line)
+TRACE 300326:
+	java.nio.HeapByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.allocate(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.<init>(<Unknown Source>:Unknown line)
+TRACE 300327:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+TRACE 300328:
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:299)
+TRACE 300329:
+	sun.security.action.GetPropertyAction.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+TRACE 300330:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:299)
+TRACE 300331:
+	sun.security.action.GetPropertyAction.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.PrintWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.clearFile(NavApp.java:299)
+TRACE 300332:
+	java.nio.HeapCharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.allocate(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushLeftoverChar(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implClose(<Unknown Source>:Unknown line)
+TRACE 300333:
+	java.io.FileOutputStream.close(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implClose(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.close(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.close(<Unknown Source>:Unknown line)
+TRACE 300334:
+	java.io.FileOutputStream$1.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.close(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implClose(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.close(<Unknown Source>:Unknown line)
+TRACE 300335:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:45)
+TRACE 300336:
+	java.io.InputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+TRACE 300337:
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:45)
+TRACE 300338:
+	java.io.FileDescriptor.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+TRACE 300339:
+	java.io.Reader.<init>(<Unknown Source>:Unknown line)
+	java.io.InputStreamReader.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:45)
+TRACE 300340:
+	java.io.Reader.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.forInputStreamReader(<Unknown Source>:Unknown line)
+TRACE 300341:
+	java.nio.HeapByteBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.ByteBuffer.allocate(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.<init>(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.<init>(<Unknown Source>:Unknown line)
+TRACE 300342:
+	java.io.Reader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:45)
+TRACE 300343:
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:45)
+	com.company.NavApp.<init>(NavApp.java:31)
+TRACE 300344:
+	java.nio.Buffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.HeapCharBuffer.<init>(<Unknown Source>:Unknown line)
+	java.nio.CharBuffer.wrap(<Unknown Source>:Unknown line)
+TRACE 300345:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:48)
+TRACE 300346:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+TRACE 300347:
+	com.company.Graph.<init>(Graph.java:13)
+	com.company.NavApp.initGraphVertex(NavApp.java:75)
+	com.company.NavApp.readEnv(NavApp.java:51)
+	com.company.NavApp.<init>(NavApp.java:31)
+TRACE 300348:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	com.company.Graph.<init>(Graph.java:14)
+TRACE 300349:
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	com.company.Graph.<init>(Graph.java:14)
+	com.company.NavApp.initGraphVertex(NavApp.java:75)
+	com.company.NavApp.readEnv(NavApp.java:51)
+TRACE 300350:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.initGraphVertex(NavApp.java:77)
+	com.company.NavApp.readEnv(NavApp.java:51)
+	com.company.NavApp.<init>(NavApp.java:31)
+TRACE 300351:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:54)
+TRACE 300352:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.readEnv(NavApp.java:58)
+	com.company.NavApp.<init>(NavApp.java:31)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300353:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+TRACE 300354:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+TRACE 300355:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+TRACE 300356:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+TRACE 300357:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.String.substring(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+TRACE 300358:
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:84)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300359:
+	java.util.ArrayList.subList(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:84)
+TRACE 300360:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList$SubList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.subList(<Unknown Source>:Unknown line)
+TRACE 300361:
+	java.util.ArrayList$SubList.listIterator(<Unknown Source>:Unknown line)
+	java.util.AbstractList.listIterator(<Unknown Source>:Unknown line)
+	java.util.ArrayList$SubList.iterator(<Unknown Source>:Unknown line)
+	java.util.AbstractCollection.toArray(<Unknown Source>:Unknown line)
+TRACE 300362:
+	java.util.ArrayList$SubList$1.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList$SubList.listIterator(<Unknown Source>:Unknown line)
+	java.util.AbstractList.listIterator(<Unknown Source>:Unknown line)
+	java.util.ArrayList$SubList.iterator(<Unknown Source>:Unknown line)
+TRACE 300363:
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+	com.company.NavApp.<init>(NavApp.java:31)
+TRACE 300364:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300365:
+	sun.misc.FloatingDecimal$ExceptionalBinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300366:
+	sun.misc.FloatingDecimal$ExceptionalBinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300367:
+	sun.misc.FloatingDecimal$ExceptionalBinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300368:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300369:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300370:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300371:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300372:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300373:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300374:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300375:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300376:
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300377:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300378:
+	java.lang.ThreadLocal.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal$1.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300379:
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300380:
+	sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300381:
+	sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300382:
+	sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300383:
+	sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300384:
+	sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300385:
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300386:
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseEnvLine(NavApp.java:89)
+TRACE 300387:
+	sun.misc.FloatingDecimal$ASCIIToBinaryBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300388:
+	sun.misc.FloatingDecimal$ASCIIToBinaryBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300389:
+	sun.misc.FloatingDecimal$ASCIIToBinaryBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300390:
+	sun.misc.FloatingDecimal$ASCIIToBinaryBuffer.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300391:
+	sun.misc.FloatingDecimal$ASCIIToBinaryBuffer.<init>(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.readJavaFormatString(<Unknown Source>:Unknown line)
+	sun.misc.FloatingDecimal.parseDouble(<Unknown Source>:Unknown line)
+	java.lang.Double.parseDouble(<Unknown Source>:Unknown line)
+TRACE 300392:
+	com.company.Edge.<init>(Edge.java:12)
+	com.company.Graph.addEdge(Graph.java:22)
+	com.company.NavApp.parseEnvLine(NavApp.java:93)
+	com.company.NavApp.readEnv(NavApp.java:58)
+TRACE 300393:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractSet.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.Vertex.addEdges(Vertex.java:60)
+TRACE 300394:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.Vertex.addEdges(Vertex.java:60)
+TRACE 300395:
+	java.util.HashMap.resize(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+TRACE 300396:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readEnv(NavApp.java:60)
+TRACE 300397:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+TRACE 300398:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+TRACE 300399:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.expandCapacity(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.append(<Unknown Source>:Unknown line)
+TRACE 300400:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+TRACE 300401:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuffer.toString(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+TRACE 300402:
+	java.io.FileInputStream$1.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.close(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.implClose(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamDecoder.close(<Unknown Source>:Unknown line)
+TRACE 300403:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.<init>(NavApp.java:33)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300404:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.<init>(NavApp.java:33)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300405:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.<init>(NavApp.java:33)
+	com.company.NavApp.main(NavApp.java:13)
+TRACE 300406:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.<init>(NavApp.java:33)
+TRACE 300407:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:100)
+TRACE 300408:
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:100)
+TRACE 300409:
+	java.io.Reader.<init>(<Unknown Source>:Unknown line)
+	java.io.InputStreamReader.<init>(<Unknown Source>:Unknown line)
+	java.io.FileReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:100)
+TRACE 300410:
+	java.io.Reader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:100)
+TRACE 300411:
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:100)
+	com.company.NavApp.<init>(NavApp.java:35)
+TRACE 300412:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:102)
+TRACE 300413:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:104)
+TRACE 300414:
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	java.lang.String.split(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:126)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300415:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.parseQuerLine(NavApp.java:132)
+	com.company.NavApp.readQuer(NavApp.java:108)
+	com.company.NavApp.<init>(NavApp.java:35)
+TRACE 300416:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.parseQuerLine(NavApp.java:133)
+	com.company.NavApp.readQuer(NavApp.java:108)
+	com.company.NavApp.<init>(NavApp.java:35)
+TRACE 300417:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractSet.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:225)
+TRACE 300418:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:225)
+TRACE 300419:
+	com.company.NavApp$1MyComparator.<init>(NavApp.java:227)
+	com.company.NavApp.aSearch(NavApp.java:233)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300420:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractQueue.<init>(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:234)
+TRACE 300421:
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:234)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300422:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.aSearch(NavApp.java:238)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300423:
+	java.util.HashMap.keySet(<Unknown Source>:Unknown line)
+	java.util.HashSet.iterator(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:258)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+TRACE 300424:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractSet.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap$KeySet.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.keySet(<Unknown Source>:Unknown line)
+TRACE 300425:
+	java.util.HashMap$KeySet.iterator(<Unknown Source>:Unknown line)
+	java.util.HashSet.iterator(<Unknown Source>:Unknown line)
+	com.company.NavApp.aSearch(NavApp.java:258)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+TRACE 300426:
+	java.util.HashMap$HashIterator.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap$KeyIterator.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap$KeySet.iterator(<Unknown Source>:Unknown line)
+	java.util.HashSet.iterator(<Unknown Source>:Unknown line)
+TRACE 300427:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.grow(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.offer(<Unknown Source>:Unknown line)
+TRACE 300428:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:203)
+TRACE 300429:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:210)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300430:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:210)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300431:
+	java.util.ArrayList.iterator(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:212)
+	com.company.NavApp.aSearch(NavApp.java:251)
+	com.company.NavApp.parseQuerLine(NavApp.java:145)
+TRACE 300432:
+	java.util.ArrayList$Itr.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList$Itr.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.iterator(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:212)
+TRACE 300433:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300434:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300435:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300436:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+TRACE 300437:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:219)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300438:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:219)
+TRACE 300439:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:220)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300440:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:220)
+TRACE 300441:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:310)
+	com.company.NavApp.printPath(NavApp.java:220)
+	com.company.NavApp.aSearch(NavApp.java:251)
+TRACE 300442:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.getAbsolutePath(<Unknown Source>:Unknown line)
+TRACE 300443:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.getAbsolutePath(<Unknown Source>:Unknown line)
+TRACE 300444:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.slashify(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+TRACE 300445:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.slashify(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+TRACE 300446:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.slashify(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+TRACE 300447:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.slashify(<Unknown Source>:Unknown line)
+TRACE 300448:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+	java.io.File.getAbsolutePath(<Unknown Source>:Unknown line)
+TRACE 300449:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	java.io.WinNTFileSystem.resolve(<Unknown Source>:Unknown line)
+TRACE 300450:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	java.io.File.getAbsoluteFile(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:312)
+	com.company.NavApp.printPath(NavApp.java:220)
+TRACE 300451:
+	java.io.OutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:312)
+TRACE 300452:
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:312)
+	com.company.NavApp.printPath(NavApp.java:220)
+TRACE 300453:
+	java.io.FileDescriptor.<init>(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.<init>(<Unknown Source>:Unknown line)
+	java.io.FileWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:312)
+TRACE 300454:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.FileWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:312)
+TRACE 300455:
+	java.io.Writer.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:313)
+TRACE 300456:
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:313)
+	com.company.NavApp.printPath(NavApp.java:220)
+TRACE 300457:
+	sun.security.action.GetPropertyAction.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedWriter.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:313)
+TRACE 300458:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:149)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300459:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:149)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300460:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:149)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300461:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:149)
+TRACE 300462:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	java.io.BufferedReader.readLine(<Unknown Source>:Unknown line)
+	com.company.NavApp.readQuer(NavApp.java:112)
+TRACE 300463:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractSet.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.uniformCost(NavApp.java:155)
+TRACE 300464:
+	java.util.AbstractMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.<init>(<Unknown Source>:Unknown line)
+	java.util.HashSet.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.uniformCost(NavApp.java:155)
+TRACE 300465:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractQueue.<init>(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+TRACE 300466:
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+	java.util.PriorityQueue.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.uniformCost(NavApp.java:157)
+	com.company.NavApp.parseQuerLine(NavApp.java:138)
+TRACE 300467:
+	com.company.Vertex.<init>(Vertex.java:15)
+	com.company.NavApp.uniformCost(NavApp.java:161)
+	com.company.NavApp.parseQuerLine(NavApp.java:138)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300468:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:210)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300469:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:210)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300470:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300471:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300472:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:213)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300473:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:219)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300474:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.printPath(NavApp.java:220)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300475:
+	java.io.File.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.writePath(NavApp.java:310)
+	com.company.NavApp.printPath(NavApp.java:220)
+	com.company.NavApp.uniformCost(NavApp.java:175)
+TRACE 300476:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:142)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300477:
+	java.lang.AbstractStringBuilder.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.<init>(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:142)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300478:
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:142)
+	com.company.NavApp.readQuer(NavApp.java:108)
+TRACE 300479:
+	java.util.Arrays.copyOfRange(<Unknown Source>:Unknown line)
+	java.lang.String.<init>(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	com.company.NavApp.parseQuerLine(NavApp.java:142)
+TRACE 300480:
+	java.lang.Shutdown.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300481:
+	java.lang.Shutdown.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300482:
+	java.lang.Shutdown$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.Shutdown$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.Shutdown.<clinit>(<Unknown Source>:Unknown line)
+TRACE 300483:
+	java.lang.Shutdown$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.Shutdown$Lock.<init>(<Unknown Source>:Unknown line)
+	java.lang.Shutdown.<clinit>(<Unknown Source>:Unknown line)
+SITES BEGIN (ordered by live bytes) Fri Aug 26 22:30:06 2016
+          percent          live          alloc'ed  stack class
+ rank   self  accum     bytes objs     bytes  objs trace name
+    1 11.59% 11.59%    320000 10000    320000 10000 300392 com.company.Edge
+    2 11.59% 23.18%    320000 10000    320000 10000 300391 sun.misc.FloatingDecimal$ASCIIToBinaryBuffer
+    3  8.72% 31.91%    240800 10000    240800 10000 300385 char[]
+    4  8.64% 40.55%    238600 9908    238600  9908 300355 char[]
+    5  8.61% 49.16%    237792 9908    237792  9908 300354 java.lang.String
+    6  7.34% 56.50%    202688  412    202688   412 300395 java.util.HashMap$Node[]
+    7  7.14% 63.64%    197088 6159    197088  6159 300152 java.util.HashMap$Node
+    8  4.80% 68.44%    132480 4140    132480  4140 300153 java.util.HashMap$Node
+    9  3.43% 71.88%     94824  101     94824   101 300346 char[]
+   10  2.60% 74.48%     71800  368     71800   368 300150 java.lang.Object[]
+   11  2.38% 76.85%     65600    4     65600     4 300456 char[]
+   12  2.09% 78.94%     57720 1443     57720  1443 300426 java.util.HashMap$KeyIterator
+   13  1.51% 80.45%     41600  100     41600   100 300358 java.lang.String[]
+   14  1.49% 81.94%     41040    5     41040     5 300326 byte[]
+   15  1.00% 82.94%     27576   11     27576    11 300212 byte[]
+   16  0.59% 83.53%     16416    2     16416     2 300341 byte[]
+   17  0.59% 84.13%     16400    1     16400     1 300328 char[]
+   18  0.59% 84.72%     16400    1     16400     1 300343 char[]
+   19  0.59% 85.31%     16400    1     16400     1 300411 char[]
+   20  0.48% 85.80%     13304   87     13304    87 300050 char[]
+   21  0.36% 86.15%      9832   10      9832    10 300399 char[]
+   22  0.30% 86.46%      8400  105      8400   105 300301 java.util.HashMap$Node[]
+   23  0.18% 86.64%      4976    5      4976     5 300400 char[]
+   24  0.17% 86.81%      4800  100      4800   100 300394 java.util.HashMap
+   25  0.15% 86.96%      4160  104      4160   104 300360 java.util.ArrayList$SubList
+   26  0.15% 87.11%      4160  104      4160   104 300362 java.util.ArrayList$SubList$1
+   27  0.14% 87.26%      4000  100      4000   100 300350 com.company.Vertex
+   28  0.14% 87.40%      4000  100      4000   100 300352 com.company.Vertex
+   29  0.09% 87.49%      2496  104      2496   104 300356 java.lang.String
+   30  0.09% 87.58%      2496  104      2496   104 300357 char[]
+   31  0.09% 87.67%      2496  104      2496   104 300353 java.util.ArrayList
+   32  0.08% 87.76%      2288   17      2288    17 300096 char[]
+   33  0.08% 87.84%      2288   17      2288    17 300097 char[]
+   34  0.08% 87.92%      2256    6      2256     6 300001 java.lang.Thread
+   35  0.08% 88.00%      2256   94      2256    94 300396 java.lang.String
+   36  0.07% 88.08%      2024    6      2024     6 300427 java.lang.Object[]
+   37  0.07% 88.14%      1904   13      1904    13 300086 char[]
+   38  0.06% 88.21%      1784   12      1784    12 300100 char[]
+   39  0.06% 88.27%      1608   12      1608    12 300105 char[]
+   40  0.06% 88.33%      1608   12      1608    12 300108 char[]
+   41  0.06% 88.38%      1600  100      1600   100 300424 java.util.HashMap$KeySet
+   42  0.06% 88.44%      1600  100      1600   100 300393 java.util.HashSet
+   43  0.06% 88.50%      1544   12      1544    12 300144 char[]
+   44  0.06% 88.55%      1544   12      1544    12 300141 char[]
+   45  0.06% 88.61%      1536   12      1536    12 300147 char[]
+   46  0.06% 88.66%      1536   12      1536    12 300149 char[]
+   47  0.06% 88.72%      1536   12      1536    12 300145 char[]
+   48  0.05% 88.77%      1488   31      1488    31 300344 java.nio.HeapCharBuffer
+   49  0.05% 88.82%      1296    3      1296     3 300000 java.lang.Thread
+   50  0.05% 88.87%      1296   10      1296    10 300178 char[]
+   51  0.04% 88.91%      1088   34      1088    34 300074 java.util.concurrent.ConcurrentHashMap$Node
+   52  0.04% 88.94%      1008   21      1008    21 300434 char[]
+   53  0.03% 88.98%       960   30       960    30 300308 java.util.concurrent.ConcurrentHashMap$Node
+   54  0.03% 89.01%       920   12       920    12 300106 byte[]
+   55  0.03% 89.04%       912   19       912    19 300107 java.nio.HeapByteBuffer
+   56  0.03% 89.08%       880    5       880     5 300398 char[]
+   57  0.03% 89.11%       832    4       832     4 300310 java.util.concurrent.ConcurrentHashMap$Node[]
+   58  0.03% 89.14%       816   17       816    17 300109 java.nio.HeapCharBuffer
+   59  0.03% 89.16%       768    5       768     5 300191 char[]
+   60  0.03% 89.19%       768    5       768     5 300181 char[]
+   61  0.03% 89.22%       768   12       768    12 300101 java.net.URL
+   62  0.03% 89.25%       768    5       768     5 300189 char[]
+   63  0.03% 89.27%       704   10       704    10 300080 char[]
+   64  0.02% 89.30%       648    3       648     3 300421 java.lang.Object[]
+   65  0.02% 89.32%       640    2       640     2 300016 java.lang.invoke.MethodType[]
+   66  0.02% 89.34%       624   26       624    26 300436 char[]
+   67  0.02% 89.37%       624    2       624     2 300037 java.lang.invoke.LambdaForm[]
+   68  0.02% 89.39%       624    2       624     2 300065 java.lang.ThreadLocal$ThreadLocalMap$Entry[]
+   69  0.02% 89.41%       624   13       624    13 300084 char[]
+   70  0.02% 89.43%       592   10       592    10 300078 char[]
+   71  0.02% 89.45%       576   12       576    12 300094 char[]
+   72  0.02% 89.47%       576   12       576    12 300103 sun.misc.URLClassPath$JarLoader
+   73  0.02% 89.49%       568    2       568     2 300307 java.lang.reflect.Method[]
+   74  0.02% 89.51%       568    2       568     2 300005 java.lang.invoke.MethodHandle[]
+   75  0.02% 89.54%       568    2       568     2 300055 sun.launcher.LauncherHelper[]
+   76  0.02% 89.55%       544    1       544     1 300000 java.util.Collections$SetFromMap
+   77  0.02% 89.57%       544    1       544     1 300000 java.util.WeakHashMap$Entry[]
+   78  0.02% 89.59%       544    1       544     1 300000 java.lang.ref.WeakReference[]
+   79  0.02% 89.61%       544    1       544     1 300000 java.lang.ref.Reference[]
+   80  0.02% 89.63%       544    1       544     1 300000 java.util.WeakHashMap$Entry
+   81  0.02% 89.65%       544    1       544     1 300000 java.lang.ClassLoader$ParallelLoaders
+   82  0.02% 89.67%       544    1       544     1 300000 sun.security.util.Debug
+   83  0.02% 89.69%       544    1       544     1 300000 sun.misc.Launcher$ExtClassLoader
+   84  0.02% 89.71%       544    1       544     1 300000 java.net.URLClassLoader
+   85  0.02% 89.73%       544    1       544     1 300000 java.security.SecureClassLoader
+   86  0.02% 89.75%       544    1       544     1 300000 sun.misc.Launcher$Factory
+   87  0.02% 89.77%       544    1       544     1 300000 java.net.URLStreamHandlerFactory
+   88  0.02% 89.79%       544    1       544     1 300000 sun.misc.Launcher
+   89  0.02% 89.81%       544    1       544     1 300000 java.lang.Compiler$1
+   90  0.02% 89.83%       544    1       544     1 300000 java.lang.Compiler
+   91  0.02% 89.85%       544    1       544     1 300000 java.lang.IllegalArgumentException
+   92  0.02% 89.87%       544    1       544     1 300000 java.lang.System$2
+   93  0.02% 89.89%       544    1       544     1 300000 sun.misc.JavaLangAccess
+   94  0.02% 89.91%       544    1       544     1 300000 sun.io.Win32ErrorMode
+   95  0.02% 89.93%       544    1       544     1 300000 sun.misc.OSEnvironment
+   96  0.02% 89.95%       544    1       544     1 300000 java.lang.Integer[]
+   97  0.02% 89.97%       544    1       544     1 300000 java.lang.Number[]
+   98  0.02% 89.99%       544    1       544     1 300000 java.lang.Integer$IntegerCache
+   99  0.02% 90.01%       544    1       544     1 300000 sun.misc.NativeSignalHandler
+  100  0.02% 90.03%       544    1       544     1 300000 sun.misc.Signal
+  101  0.02% 90.05%       544    1       544     1 300000 java.lang.Terminator$1
+  102  0.02% 90.07%       544    1       544     1 300000 sun.misc.SignalHandler
+  103  0.02% 90.09%       544    1       544     1 300000 java.lang.Terminator
+  104  0.02% 90.11%       544    1       544     1 300000 java.util.LinkedHashMap$Entry
+  105  0.02% 90.13%       544    1       544     1 300000 java.io.ExpiringCache$Entry
+  106  0.02% 90.15%       544    1       544     1 300000 java.io.File$PathStatus[]
+  107  0.02% 90.17%       544    1       544     1 300000 java.lang.Enum[]
+  108  0.02% 90.19%       544    1       544     1 300000 java.lang.ClassLoader$3
+  109  0.02% 90.21%       544    1       544     1 300000 java.lang.ClassLoader$NativeLibrary
+  110  0.02% 90.22%       544    1       544     1 300000 java.nio.file.Path
+  111  0.02% 90.24%       544    1       544     1 300000 java.nio.file.Watchable
+  112  0.02% 90.26%       544    1       544     1 300000 java.io.File$PathStatus
+  113  0.02% 90.28%       544    1       544     1 300000 java.lang.Enum
+  114  0.02% 90.30%       544    1       544     1 300000 java.io.ExpiringCache$1
+  115  0.02% 90.32%       544    1       544     1 300000 java.util.LinkedHashMap
+  116  0.02% 90.34%       544    1       544     1 300000 java.io.ExpiringCache
+  117  0.02% 90.36%       544    1       544     1 300000 java.io.WinNTFileSystem
+  118  0.02% 90.38%       544    1       544     1 300000 java.io.FileSystem
+  119  0.02% 90.40%       544    1       544     1 300000 java.io.DefaultFileSystem
+  120  0.02% 90.42%       544    1       544     1 300000 java.io.File
+  121  0.02% 90.44%       544    1       544     1 300000 sun.security.action.GetPropertyAction
+  122  0.02% 90.46%       544    1       544     1 300000 java.io.BufferedWriter
+  123  0.02% 90.48%       544    1       544     1 300000 java.nio.Bits$1
+  124  0.02% 90.50%       544    1       544     1 300000 sun.misc.JavaNioAccess
+  125  0.02% 90.52%       544    1       544     1 300000 java.nio.ByteOrder
+  126  0.02% 90.54%       544    1       544     1 300000 java.nio.Bits
+  127  0.02% 90.56%       544    1       544     1 300000 java.nio.HeapByteBuffer
+  128  0.02% 90.58%       544    1       544     1 300000 java.nio.ByteBuffer
+  129  0.02% 90.60%       544    1       544     1 300000 java.nio.charset.CodingErrorAction
+  130  0.02% 90.62%       544    1       544     1 300000 sun.nio.cs.SingleByte$Encoder
+  131  0.02% 90.64%       544    1       544     1 300000 java.nio.charset.CharsetEncoder
+  132  0.02% 90.66%       544    1       544     1 300000 sun.nio.cs.ArrayEncoder
+  133  0.02% 90.68%       544    1       544     1 300000 sun.nio.cs.StreamEncoder
+  134  0.02% 90.70%       544    1       544     1 300000 java.io.OutputStreamWriter
+  135  0.02% 90.72%       544    1       544     1 300000 java.io.Writer
+  136  0.02% 90.74%       544    1       544     1 300000 sun.reflect.DelegatingConstructorAccessorImpl
+  137  0.02% 90.76%       544    1       544     1 300000 sun.reflect.NativeConstructorAccessorImpl
+  138  0.02% 90.78%       544    1       544     1 300000 sun.reflect.ReflectionFactory$1
+  139  0.02% 90.80%       544    1       544     1 300000 java.lang.Class$1
+  140  0.02% 90.82%       544    1       544     1 300000 java.lang.reflect.Constructor[]
+  141  0.02% 90.84%       544    1       544     1 300000 java.lang.reflect.Executable[]
+  142  0.02% 90.86%       544    1       544     1 300000 sun.nio.cs.SingleByte
+  143  0.02% 90.88%       544    1       544     1 300000 sun.nio.cs.IBM437
+  144  0.02% 90.89%       544    1       544     1 300000 sun.nio.cs.HistoricallyNamedCharset
+  145  0.02% 90.91%       544    1       544     1 300000 java.util.Arrays
+  146  0.02% 90.93%       544    1       544     1 300000 java.util.concurrent.atomic.AtomicInteger
+  147  0.02% 90.95%       544    1       544     1 300000 java.lang.ThreadLocal
+  148  0.02% 90.97%       544    1       544     1 300000 sun.nio.cs.StandardCharsets$Cache
+  149  0.02% 90.99%       544    1       544     1 300000 sun.nio.cs.StandardCharsets$Classes
+  150  0.02% 91.01%       544    1       544     1 300000 sun.nio.cs.StandardCharsets$Aliases
+  151  0.02% 91.03%       544    1       544     1 300000 sun.util.PreHashedMap
+  152  0.02% 91.05%       544    1       544     1 300000 sun.nio.cs.StandardCharsets
+  153  0.02% 91.07%       544    1       544     1 300000 sun.nio.cs.FastCharsetProvider
+  154  0.02% 91.09%       544    1       544     1 300000 java.nio.charset.spi.CharsetProvider
+  155  0.02% 91.11%       544    1       544     1 300000 java.nio.charset.Charset
+  156  0.02% 91.13%       544    1       544     1 300000 java.io.BufferedOutputStream
+  157  0.02% 91.15%       544    1       544     1 300000 java.io.PrintStream
+  158  0.02% 91.17%       544    1       544     1 300000 java.io.FilterOutputStream
+  159  0.02% 91.19%       544    1       544     1 300000 sun.reflect.misc.ReflectUtil
+  160  0.02% 91.21%       544    1       544     1 300000 java.lang.reflect.ReflectAccess
+  161  0.02% 91.23%       544    1       544     1 300000 sun.reflect.LangReflectAccess
+  162  0.02% 91.25%       544    1       544     1 300000 java.lang.reflect.Modifier
+  163  0.02% 91.27%       544    1       544     1 300000 java.lang.ClassValue$ClassValueMap
+  164  0.02% 91.29%       544    1       544     1 300000 java.util.WeakHashMap
+  165  0.02% 91.31%       544    1       544     1 300000 sun.reflect.annotation.AnnotationType
+  166  0.02% 91.33%       544    1       544     1 300000 java.lang.Class$AnnotationData
+  167  0.02% 91.35%       544    1       544     1 300000 sun.reflect.generics.repository.ClassRepository
+  168  0.02% 91.37%       544    1       544     1 300000 sun.reflect.generics.repository.GenericDeclRepository
+  169  0.02% 91.39%       544    1       544     1 300000 sun.reflect.generics.repository.AbstractRepository
+  170  0.02% 91.41%       544    1       544     1 300000 java.lang.reflect.Field[]
+  171  0.02% 91.43%       544    1       544     1 300000 java.lang.reflect.Member[]
+  172  0.02% 91.45%       544    1       544     1 300000 java.lang.reflect.AccessibleObject[]
+  173  0.02% 91.47%       544    1       544     1 300000 java.lang.Class$Atomic
+  174  0.02% 91.49%       544    1       544     1 300000 java.lang.Class$ReflectionData
+  175  0.02% 91.51%       544    1       544     1 300000 java.lang.Class$3
+  176  0.02% 91.53%       544    1       544     1 300000 java.util.concurrent.atomic.AtomicReferenceFieldUpdater$AtomicReferenceFieldUpdaterImpl$1
+  177  0.02% 91.55%       544    1       544     1 300000 java.security.PrivilegedExceptionAction
+  178  0.02% 91.56%       544    1       544     1 300000 java.util.concurrent.atomic.AtomicReferenceFieldUpdater$AtomicReferenceFieldUpdaterImpl
+  179  0.02% 91.58%       544    1       544     1 300000 java.util.concurrent.atomic.AtomicReferenceFieldUpdater
+  180  0.02% 91.60%       544    1       544     1 300000 java.io.BufferedInputStream
+  181  0.02% 91.62%       544    1       544     1 300000 java.io.FilterInputStream
+  182  0.02% 91.64%       544    1       544     1 300000 java.io.FileOutputStream
+  183  0.02% 91.66%       544    1       544     1 300000 java.io.OutputStream
+  184  0.02% 91.68%       544    1       544     1 300000 java.io.Flushable
+  185  0.02% 91.70%       544    1       544     1 300000 java.util.HashMap$Node[]
+  186  0.02% 91.72%       544    1       544     1 300000 java.util.HashMap$Node
+  187  0.02% 91.74%       544    1       544     1 300000 java.util.HashMap
+  188  0.02% 91.76%       544    1       544     1 300000 sun.reflect.Reflection
+  189  0.02% 91.78%       544    1       544     1 300000 java.lang.String[]
+  190  0.02% 91.80%       544    1       544     1 300000 java.lang.CharSequence[]
+  191  0.02% 91.82%       544    1       544     1 300000 java.util.Collections$UnmodifiableRandomAccessList
+  192  0.02% 91.84%       544    1       544     1 300000 java.util.Collections$UnmodifiableList
+  193  0.02% 91.86%       544    1       544     1 300000 java.util.Collections$UnmodifiableCollection
+  194  0.02% 91.88%       544    1       544     1 300000 java.util.ArrayList
+  195  0.02% 91.90%       544    1       544     1 300000 java.lang.NoSuchMethodError
+  196  0.02% 91.92%       544    1       544     1 300000 java.lang.IncompatibleClassChangeError
+  197  0.02% 91.94%       544    1       544     1 300000 sun.misc.SharedSecrets
+  198  0.02% 91.96%       544    1       544     1 300000 java.io.FileDescriptor$1
+  199  0.02% 91.98%       544    1       544     1 300000 sun.misc.JavaIOFileDescriptorAccess
+  200  0.02% 92.00%       544    1       544     1 300000 java.io.FileDescriptor
+  201  0.02% 92.02%       544    1       544     1 300000 java.io.FileInputStream
+  202  0.02% 92.04%       544    1       544     1 300000 java.io.InputStream
+  203  0.02% 92.06%       544    1       544     1 300000 java.io.Closeable
+  204  0.02% 92.08%       544    1       544     1 300000 java.lang.AutoCloseable
+  205  0.02% 92.10%       544    1       544     1 300000 sun.misc.Version
+  206  0.02% 92.12%       544    1       544     1 300000 java.lang.Runtime
+  207  0.02% 92.14%       544    1       544     1 300000 java.util.Hashtable$Enumerator
+  208  0.02% 92.16%       544    1       544     1 300000 java.util.Iterator
+  209  0.02% 92.18%       544    1       544     1 300000 java.util.Enumeration
+  210  0.02% 92.20%       544    1       544     1 300000 java.util.Objects
+  211  0.02% 92.22%       544    1       544     1 300000 java.util.Collections$SynchronizedSet
+  212  0.02% 92.23%       544    1       544     1 300000 java.util.Collections$SynchronizedCollection
+  213  0.02% 92.25%       544    1       544     1 300000 java.util.Collections$EmptyMap
+  214  0.02% 92.27%       544    1       544     1 300000 java.util.AbstractMap
+  215  0.02% 92.29%       544    1       544     1 300000 java.util.Collections$EmptyList
+  216  0.02% 92.31%       544    1       544     1 300000 java.util.Collections$EmptySet
+  217  0.02% 92.33%       544    1       544     1 300000 java.util.Collections
+  218  0.02% 92.35%       544    1       544     1 300000 java.util.Hashtable$EntrySet
+  219  0.02% 92.37%       544    1       544     1 300000 java.util.AbstractSet
+  220  0.02% 92.39%       544    1       544     1 300000 java.util.Set
+  221  0.02% 92.41%       544    1       544     1 300000 java.lang.Math
+  222  0.02% 92.43%       544    1       544     1 300000 java.util.Hashtable$Entry[]
+  223  0.02% 92.45%       544    1       544     1 300000 java.util.Map$Entry[]
+  224  0.02% 92.47%       544    1       544     1 300000 java.util.Hashtable$Entry
+  225  0.02% 92.49%       544    1       544     1 300000 java.util.Map$Entry
+  226  0.02% 92.51%       544    1       544     1 300000 sun.misc.VM
+  227  0.02% 92.53%       544    1       544     1 300000 java.lang.ref.Finalizer$FinalizerThread
+  228  0.02% 92.55%       544    1       544     1 300000 java.lang.ref.ReferenceQueue$Lock
+  229  0.02% 92.57%       544    1       544     1 300000 java.lang.ref.ReferenceQueue$Null
+  230  0.02% 92.59%       544    1       544     1 300000 java.lang.ref.ReferenceQueue
+  231  0.02% 92.61%       544    1       544     1 300000 java.lang.Thread[]
+  232  0.02% 92.63%       544    1       544     1 300000 java.lang.Runnable[]
+  233  0.02% 92.65%       544    1       544     1 300000 java.lang.ref.Reference$ReferenceHandler
+  234  0.02% 92.67%       544    1       544     1 300000 java.lang.ref.Reference$Lock
+  235  0.02% 92.69%       544    1       544     1 300000 sun.reflect.ReflectionFactory
+  236  0.02% 92.71%       544    1       544     1 300000 java.util.Stack
+  237  0.02% 92.73%       544    1       544     1 300000 java.util.Vector
+  238  0.02% 92.75%       544    1       544     1 300000 java.util.AbstractList
+  239  0.02% 92.77%       544    1       544     1 300000 java.util.AbstractCollection
+  240  0.02% 92.79%       544    1       544     1 300000 java.util.RandomAccess
+  241  0.02% 92.81%       544    1       544     1 300000 java.util.List
+  242  0.02% 92.83%       544    1       544     1 300000 java.util.Collection
+  243  0.02% 92.85%       544    1       544     1 300000 java.lang.Iterable
+  244  0.02% 92.87%       544    1       544     1 300000 java.security.cert.Certificate[]
+  245  0.02% 92.89%       544    1       544     1 300000 java.security.cert.Certificate
+  246  0.02% 92.90%       544    1       544     1 300000 sun.reflect.ReflectionFactory$GetReflectionFactoryAction
+  247  0.02% 92.92%       544    1       544     1 300000 java.security.PrivilegedAction
+  248  0.02% 92.94%       544    1       544     1 300000 java.lang.reflect.ReflectPermission
+  249  0.02% 92.96%       544    1       544     1 300000 java.security.AccessController
+  250  0.02% 92.98%       544    1       544     1 300000 java.lang.RuntimePermission
+  251  0.02% 93.00%       544    1       544     1 300000 java.security.BasicPermission
+  252  0.02% 93.02%       544    1       544     1 300000 java.util.WeakHashMap$KeySet
+  253  0.02% 93.04%       544    1       544     1 300000 java.security.Guard
+  254  0.02% 93.06%       544    1       544     1 300000 java.lang.StackTraceElement[]
+  255  0.02% 93.08%       544    1       544     1 300000 java.lang.ThreadGroup[]
+  256  0.02% 93.10%       544    1       544     1 300000 java.lang.Thread$UncaughtExceptionHandler[]
+  257  0.02% 93.12%       544    1       544     1 300000 com.sun.demo.jvmti.hprof.Tracker
+  258  0.02% 93.14%       544    1       544     1 300000 java.lang.String$CaseInsensitiveComparator
+  259  0.02% 93.16%       544    1       544     1 300000 java.util.Comparator
+  260  0.02% 93.18%       544    1       544     1 300000 java.io.ObjectStreamField[]
+  261  0.02% 93.20%       544    1       544     1 300000 java.lang.Comparable[]
+  262  0.02% 93.22%       544    1       544     1 300000 java.io.ObjectStreamField
+  263  0.02% 93.24%       544    1       544     1 300000 java.lang.OutOfMemoryError[]
+  264  0.02% 93.26%       544    1       544     1 300000 java.lang.VirtualMachineError[]
+  265  0.02% 93.28%       544    1       544     1 300000 java.lang.Error[]
+  266  0.02% 93.30%       544    1       544     1 300000 java.lang.Throwable[]
+  267  0.02% 93.32%       544    1       544     1 300000 java.lang.ArithmeticException
+  268  0.02% 93.34%       544    1       544     1 300000 java.lang.NullPointerException
+  269  0.02% 93.36%       544    1       544     1 300000 sun.util.locale.LocaleObjectCache
+  270  0.02% 93.38%       544    1       544     1 300000 java.io.Serializable[]
+  271  0.02% 93.40%       544    1       544     1 300000 java.lang.reflect.GenericDeclaration[]
+  272  0.02% 93.42%       544    1       544     1 300000 java.util.StringTokenizer
+  273  0.02% 93.44%       544    1       544     1 300000 java.lang.reflect.Type[]
+  274  0.02% 93.46%       544    1       544     1 300000 java.lang.Object[]
+  275  0.02% 93.48%       544    1       544     1 300000 java.lang.Long
+  276  0.02% 93.50%       544    1       544     1 300000 java.lang.Integer
+  277  0.02% 93.52%       544    1       544     1 300000 java.lang.Short
+  278  0.02% 93.54%       544    1       544     1 300000 java.lang.Byte
+  279  0.02% 93.56%       544    1       544     1 300000 java.lang.Double
+  280  0.02% 93.57%       544    1       544     1 300000 java.lang.Float
+  281  0.02% 93.59%       544    1       544     1 300000 java.lang.Number
+  282  0.02% 93.61%       544    1       544     1 300000 java.lang.Character
+  283  0.02% 93.63%       544    1       544     1 300000 java.lang.Boolean
+  284  0.02% 93.65%       544    1       544     1 300000 java.nio.Buffer
+  285  0.02% 93.67%       544    1       544     1 300000 java.lang.StackTraceElement
+  286  0.02% 93.69%       544    1       544     1 300000 sun.misc.Unsafe
+  287  0.02% 93.71%       544    1       544     1 300000 java.lang.StringBuilder
+  288  0.02% 93.73%       544    1       544     1 300000 java.lang.StringBuffer
+  289  0.02% 93.75%       544    1       544     1 300000 java.lang.AbstractStringBuilder
+  290  0.02% 93.77%       544    1       544     1 300000 java.lang.Appendable
+  291  0.02% 93.79%       544    1       544     1 300000 java.lang.invoke.VolatileCallSite
+  292  0.02% 93.81%       544    1       544     1 300000 java.lang.invoke.MutableCallSite
+  293  0.02% 93.83%       544    1       544     1 300000 sun.nio.cs.MS1252
+  294  0.02% 93.85%       544    1       544     1 300000 java.lang.invoke.CallSite
+  295  0.02% 93.87%       544    1       544     1 300000 java.lang.BootstrapMethodError
+  296  0.02% 93.89%       544    1       544     1 300000 java.lang.invoke.MethodType
+  297  0.02% 93.91%       544    1       544     1 300000 java.lang.invoke.LambdaForm
+  298  0.02% 93.93%       544    1       544     1 300000 java.lang.invoke.MethodHandleNatives
+  299  0.02% 93.95%       544    1       544     1 300000 java.lang.invoke.MemberName
+  300  0.02% 93.97%       544    1       544     1 300000 java.lang.invoke.DirectMethodHandle
+  301  0.02% 93.99%       544    1       544     1 300000 java.lang.invoke.MethodHandle
+  302  0.02% 94.01%       544    1       544     1 300000 sun.reflect.CallerSensitive
+  303  0.02% 94.03%       544    1       544     1 300000 java.lang.annotation.Annotation
+  304  0.02% 94.05%       544    1       544     1 300000 sun.reflect.UnsafeStaticFieldAccessorImpl
+  305  0.02% 94.07%       544    1       544     1 300000 sun.reflect.UnsafeFieldAccessorImpl
+  306  0.02% 94.09%       544    1       544     1 300000 sun.reflect.FieldAccessorImpl
+  307  0.02% 94.11%       544    1       544     1 300000 sun.reflect.FieldAccessor
+  308  0.02% 94.13%       544    1       544     1 300000 sun.reflect.ConstantPool
+  309  0.02% 94.15%       544    1       544     1 300000 sun.reflect.DelegatingClassLoader
+  310  0.02% 94.17%       544    1       544     1 300000 sun.reflect.ConstructorAccessorImpl
+  311  0.02% 94.19%       544    1       544     1 300000 sun.reflect.ConstructorAccessor
+  312  0.02% 94.21%       544    1       544     1 300000 sun.reflect.MethodAccessorImpl
+  313  0.02% 94.23%       544    1       544     1 300000 sun.reflect.MethodAccessor
+  314  0.02% 94.24%       544    1       544     1 300000 sun.reflect.MagicAccessorImpl
+  315  0.02% 94.26%       544    1       544     1 300000 java.lang.reflect.Constructor
+  316  0.02% 94.28%       544    1       544     1 300000 java.lang.reflect.Method
+  317  0.02% 94.30%       544    1       544     1 300000 java.lang.reflect.Executable
+  318  0.02% 94.32%       544    1       544     1 300000 java.lang.reflect.Parameter
+  319  0.02% 94.34%       544    1       544     1 300000 java.lang.reflect.Field
+  320  0.02% 94.36%       544    1       544     1 300000 java.lang.reflect.Member
+  321  0.02% 94.38%       544    1       544     1 300000 java.lang.reflect.AccessibleObject
+  322  0.02% 94.40%       544    1       544     1 300000 java.util.Properties
+  323  0.02% 94.42%       544    1       544     1 300000 java.util.Hashtable
+  324  0.02% 94.44%       544    1       544     1 300000 java.util.Dictionary
+  325  0.02% 94.46%       544    1       544     1 300000 java.util.Map
+  326  0.02% 94.48%       544    1       544     1 300000 java.lang.ThreadGroup
+  327  0.02% 94.50%       544    1       544     1 300000 java.lang.Thread$UncaughtExceptionHandler
+  328  0.02% 94.52%       544    1       544     1 300000 java.util.Locale$Cache
+  329  0.02% 94.54%       544    1       544     1 300000 java.lang.Runnable
+  330  0.02% 94.56%       544    1       544     1 300000 java.lang.ref.Finalizer
+  331  0.02% 94.58%       544    1       544     1 300000 java.lang.ref.PhantomReference
+  332  0.02% 94.60%       544    1       544     1 300000 java.lang.ref.FinalReference
+  333  0.02% 94.62%       544    1       544     1 300000 java.lang.ref.WeakReference
+  334  0.02% 94.64%       544    1       544     1 300000 java.lang.ref.SoftReference
+  335  0.02% 94.66%       544    1       544     1 300000 java.lang.ref.Reference
+  336  0.02% 94.68%       544    1       544     1 300000 java.lang.IllegalMonitorStateException
+  337  0.02% 94.70%       544    1       544     1 300000 java.lang.StackOverflowError
+  338  0.02% 94.72%       544    1       544     1 300000 java.lang.OutOfMemoryError
+  339  0.02% 94.74%       544    1       544     1 300000 java.lang.VirtualMachineError
+  340  0.02% 94.76%       544    1       544     1 300000 java.lang.ArrayStoreException
+  341  0.02% 94.78%       544    1       544     1 300000 java.lang.ClassCastException
+  342  0.02% 94.80%       544    1       544     1 300000 java.lang.NoClassDefFoundError
+  343  0.02% 94.82%       544    1       544     1 300000 java.lang.LinkageError
+  344  0.02% 94.84%       544    1       544     1 300000 java.lang.ClassNotFoundException
+  345  0.02% 94.86%       544    1       544     1 300000 java.lang.ReflectiveOperationException
+  346  0.02% 94.88%       544    1       544     1 300000 java.security.AccessControlContext
+  347  0.02% 94.90%       544    1       544     1 300000 java.security.ProtectionDomain
+  348  0.02% 94.91%       544    1       544     1 300000 java.lang.SecurityManager
+  349  0.02% 94.93%       544    1       544     1 300000 java.lang.RuntimeException
+  350  0.02% 94.95%       544    1       544     1 300000 java.lang.Exception
+  351  0.02% 94.97%       544    1       544     1 300000 java.lang.ThreadDeath
+  352  0.02% 94.99%       544    1       544     1 300000 java.lang.Error
+  353  0.02% 95.01%       544    1       544     1 300000 java.lang.Throwable
+  354  0.02% 95.03%       544    1       544     1 300000 java.lang.System
+  355  0.02% 95.05%       544    1       544     1 300000 java.lang.ClassLoader
+  356  0.02% 95.07%       544    1       544     1 300000 java.lang.Cloneable
+  357  0.02% 95.09%       544    1       544     1 300000 java.lang.Class
+  358  0.02% 95.11%       544    1       544     1 300000 java.lang.reflect.Type
+  359  0.02% 95.13%       544    1       544     1 300000 java.lang.reflect.GenericDeclaration
+  360  0.02% 95.15%       544    1       544     1 300000 java.lang.reflect.AnnotatedElement
+  361  0.02% 95.17%       544    1       544     1 300000 java.lang.String
+  362  0.02% 95.19%       544    1       544     1 300000 java.lang.CharSequence
+  363  0.02% 95.21%       544    1       544     1 300000 java.lang.Comparable
+  364  0.02% 95.23%       544    1       544     1 300000 java.io.Serializable
+  365  0.02% 95.25%       544    1       544     1 300000 long[]
+  366  0.02% 95.27%       544    1       544     1 300000 int[]
+  367  0.02% 95.29%       544    1       544     1 300000 short[]
+  368  0.02% 95.31%       544    1       544     1 300000 byte[]
+  369  0.02% 95.33%       544    1       544     1 300000 double[]
+  370  0.02% 95.35%       544    1       544     1 300000 float[]
+  371  0.02% 95.37%       544    1       544     1 300000 char[]
+  372  0.02% 95.39%       544    1       544     1 300000 boolean[]
+  373  0.02% 95.41%       544    1       544     1 300000 java.util.concurrent.ConcurrentMap
+  374  0.02% 95.43%       544    1       544     1 300386 sun.misc.FloatingDecimal$ASCIIToBinaryBuffer
+  375  0.02% 95.45%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap
+  376  0.02% 95.47%       544    1       544     1 300004 java.lang.invoke.MethodHandleImpl
+  377  0.02% 95.49%       544    1       544     1 300000 sun.misc.JavaNetAccess
+  378  0.02% 95.51%       544    1       544     1 300006 java.lang.invoke.MemberName$Factory
+  379  0.02% 95.53%       544    1       544     1 300481 java.lang.Shutdown$Lock
+  380  0.02% 95.55%       544    1       544     1 300008 java.lang.invoke.LambdaForm$NamedFunction
+  381  0.02% 95.57%       544    1       544     1 300302 com.company.Edge
+  382  0.02% 95.58%       544    1       544     1 300010 java.lang.invoke.MethodType$ConcurrentWeakInternSet
+  383  0.02% 95.60%       544    1       544     1 300000 java.lang.Shutdown
+  384  0.02% 95.62%       544    1       544     1 300000 java.util.concurrent.locks.Lock
+  385  0.02% 95.64%       544    1       544     1 300000 java.util.concurrent.locks.ReentrantLock
+  386  0.02% 95.66%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$Segment
+  387  0.02% 95.68%       544    1       544     1 300000 java.util.concurrent.locks.Lock[]
+  388  0.02% 95.70%       544    1       544     1 300000 java.io.File[]
+  389  0.02% 95.72%       544    1       544     1 300379 sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer
+  390  0.02% 95.74%       544    1       544     1 300018 java.lang.invoke.MethodHandleStatics
+  391  0.02% 95.76%       544    1       544     1 300379 sun.misc.FloatingDecimal$ASCIIToBinaryConverter
+  392  0.02% 95.78%       544    1       544     1 300020 java.lang.invoke.MethodHandleStatics$1
+  393  0.02% 95.80%       544    1       544     1 300000 java.lang.Object
+  394  0.02% 95.82%       544    1       544     1 300000 java.util.concurrent.locks.ReentrantLock[]
+  395  0.02% 95.84%       544    1       544     1 300377 sun.misc.FloatingDecimal$1
+  396  0.02% 95.86%       544    1       544     1 300024 java.lang.invoke.MethodTypeForm
+  397  0.02% 95.88%       544    1       544     1 300024 java.lang.invoke.Invokers
+  398  0.02% 95.90%       544    1       544     1 300000 sun.nio.cs.ArrayDecoder
+  399  0.02% 95.92%       544    1       544     1 300368 sun.misc.FloatingDecimal$BinaryToASCIIBuffer
+  400  0.02% 95.94%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$Segment[]
+  401  0.02% 95.96%       544    1       544     1 300028 java.lang.invoke.MethodType$ConcurrentWeakInternSet$WeakEntry
+  402  0.02% 95.98%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$Node
+  403  0.02% 96.00%       544    1       544     1 300364 sun.misc.FloatingDecimal$ExceptionalBinaryToASCIIBuffer
+  404  0.02% 96.02%       544    1       544     1 300031 java.lang.Void
+  405  0.02% 96.04%       544    1       544     1 300364 sun.misc.FloatingDecimal$BinaryToASCIIConverter
+  406  0.02% 96.06%       544    1       544     1 300363 sun.misc.FloatingDecimal
+  407  0.02% 96.08%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$Node[]
+  408  0.02% 96.10%       544    1       544     1 300361 java.util.ArrayList$SubList$1
+  409  0.02% 96.12%       544    1       544     1 300361 java.util.ListIterator
+  410  0.02% 96.14%       544    1       544     1 300000 sun.misc.Launcher$ExtClassLoader$1
+  411  0.02% 96.16%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$CounterCell
+  412  0.02% 96.18%       544    1       544     1 300359 java.util.ArrayList$SubList
+  413  0.02% 96.20%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$CounterCell[]
+  414  0.02% 96.22%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$CollectionView
+  415  0.02% 96.24%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$KeySetView
+  416  0.02% 96.25%       544    1       544     1 300043 java.lang.IllegalAccessException
+  417  0.02% 96.27%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$ValuesView
+  418  0.02% 96.29%       544    1       544     1 300000 java.util.concurrent.ConcurrentHashMap$EntrySetView
+  419  0.02% 96.31%       544    1       544     1 300000 sun.util.locale.BaseLocale
+  420  0.02% 96.33%       544    1       544     1 300000 sun.util.locale.BaseLocale$Cache
+  421  0.02% 96.35%       544    1       544     1 300000 sun.misc.PostVMInitHook
+  422  0.02% 96.37%       544    1       544     1 300000 sun.util.locale.BaseLocale$Key
+  423  0.02% 96.39%       544    1       544     1 300302 com.company.Vertex
+  424  0.02% 96.41%       544    1       544     1 300000 sun.util.locale.LocaleObjectCache$CacheEntry
+  425  0.02% 96.43%       544    1       544     1 300302 com.company.Graph
+  426  0.02% 96.45%       544    1       544     1 300000 java.util.Locale$LocaleKey
+  427  0.02% 96.47%       544    1       544     1 300000 sun.util.locale.LocaleUtils
+  428  0.02% 96.49%       544    1       544     1 300000 sun.launcher.LauncherHelper
+  429  0.02% 96.51%       544    1       544     1 300000 java.lang.CharacterData
+  430  0.02% 96.53%       544    1       544     1 300000 java.security.Permission
+  431  0.02% 96.55%       544    1       544     1 300000 java.lang.CharacterDataLatin1
+  432  0.02% 96.57%       544    1       544     1 300000 java.util.HashMap$TreeNode
+  433  0.02% 96.59%       544    1       544     1 300333 java.io.FileOutputStream$1
+  434  0.02% 96.61%       544    1       544     1 300059 java.lang.StringCoding
+  435  0.02% 96.63%       544    1       544     1 300000 java.io.FileInputStream$1
+  436  0.02% 96.65%       544    1       544     1 300000 sun.net.www.ParseUtil
+  437  0.02% 96.67%       544    1       544     1 300062 java.lang.ThreadLocal$ThreadLocalMap
+  438  0.02% 96.69%       544    1       544     1 300309 java.io.PrintWriter
+  439  0.02% 96.71%       544    1       544     1 300064 java.lang.ThreadLocal$ThreadLocalMap$Entry
+  440  0.02% 96.73%       544    1       544     1 300000 sun.misc.MetaIndex
+  441  0.02% 96.75%       544    1       544     1 300302 com.company.NavApp$1MyComparator
+  442  0.02% 96.77%       544    1       544     1 300067 java.lang.StringCoding$StringDecoder
+  443  0.02% 96.79%       544    1       544     1 300311 java.util.concurrent.ConcurrentHashMap$ForwardingNode
+  444  0.02% 96.81%       544    1       544     1 300000 java.nio.charset.CharsetDecoder
+  445  0.02% 96.83%       544    1       544     1 300309 java.io.FileWriter
+  446  0.02% 96.85%       544    1       544     1 300309 java.io.IOException
+  447  0.02% 96.87%       544    1       544     1 300000 sun.nio.cs.SingleByte$Decoder
+  448  0.02% 96.89%       544    1       544     1 300000 java.net.URLClassLoader$7
+  449  0.02% 96.91%       544    1       544     1 300000 java.nio.CharBuffer
+  450  0.02% 96.92%       544    1       544     1 300305 java.lang.Class$MethodArray
+  451  0.02% 96.94%       544    1       544     1 300076 java.net.URLClassLoader$1
+  452  0.02% 96.96%       544    1       544     1 300309 java.util.Queue
+  453  0.02% 96.98%       544    1       544     1 300000 java.lang.Readable
+  454  0.02% 97.00%       544    1       544     1 300303 sun.launcher.LauncherHelper$FXHelper
+  455  0.02% 97.02%       544    1       544     1 300000 java.io.Reader
+  456  0.02% 97.04%       544    1       544     1 300302 com.company.NavApp
+  457  0.02% 97.06%       544    1       544     1 300082 sun.net.util.URLUtil
+  458  0.02% 97.08%       544    1       544     1 300000 java.util.BitSet
+  459  0.02% 97.10%       544    1       544     1 300000 java.io.BufferedReader
+  460  0.02% 97.12%       544    1       544     1 300309 java.util.AbstractQueue
+  461  0.02% 97.14%       544    1       544     1 300000 java.net.URL
+  462  0.02% 97.16%       544    1       544     1 300087 sun.misc.URLClassPath$3
+  463  0.02% 97.18%       544    1       544     1 300309 java.util.PriorityQueue
+  464  0.02% 97.20%       544    1       544     1 300089 sun.misc.URLClassPath$Loader
+  465  0.02% 97.22%       544    1       544     1 300089 sun.misc.URLClassPath$JarLoader
+  466  0.02% 97.24%       544    1       544     1 300090 java.util.zip.ZipConstants
+  467  0.02% 97.26%       544    1       544     1 300090 java.util.zip.ZipFile
+  468  0.02% 97.28%       544    1       544     1 300091 sun.misc.JavaUtilZipFileAccess
+  469  0.02% 97.30%       544    1       544     1 300091 java.util.zip.ZipFile$1
+  470  0.02% 97.32%       544    1       544     1 300285 java.security.BasicPermissionCollection
+  471  0.02% 97.34%       544    1       544     1 300283 java.security.UnresolvedPermission
+  472  0.02% 97.36%       544    1       544     1 300000 java.io.InputStreamReader
+  473  0.02% 97.38%       544    1       544     1 300282 java.security.AllPermission
+  474  0.02% 97.40%       544    1       544     1 300000 java.net.Parts
+  475  0.02% 97.42%       544    1       544     1 300000 java.net.URLStreamHandler
+  476  0.02% 97.44%       544    1       544     1 300000 java.io.FileReader
+  477  0.02% 97.46%       544    1       544     1 300423 java.util.HashMap$KeySet
+  478  0.02% 97.48%       544    1       544     1 300000 sun.net.www.protocol.file.Handler
+  479  0.02% 97.50%       544    1       544     1 300000 java.nio.HeapCharBuffer
+  480  0.02% 97.52%       544    1       544     1 300276 java.io.FilePermissionCollection
+  481  0.02% 97.54%       544    1       544     1 300000 java.lang.reflect.AnnotatedElement[]
+  482  0.02% 97.56%       544    1       544     1 300000 java.net.URL[]
+  483  0.02% 97.58%       544    1       544     1 300000 sun.misc.JavaSecurityAccess
+  484  0.02% 97.59%       544    1       544     1 300000 java.nio.charset.CoderResult
+  485  0.02% 97.61%       544    1       544     1 300000 java.nio.charset.CoderResult$Cache
+  486  0.02% 97.63%       544    1       544     1 300000 java.security.ProtectionDomain$1
+  487  0.02% 97.65%       544    1       544     1 300000 java.nio.charset.CoderResult$1
+  488  0.02% 97.67%       544    1       544     1 300110 sun.nio.cs.ThreadLocalCoders
+  489  0.02% 97.69%       544    1       544     1 300111 sun.nio.cs.ThreadLocalCoders$Cache
+  490  0.02% 97.71%       544    1       544     1 300111 sun.nio.cs.ThreadLocalCoders$1
+  491  0.02% 97.73%       544    1       544     1 300425 java.util.HashMap$HashIterator
+  492  0.02% 97.75%       544    1       544     1 300000 sun.misc.JavaSecurityProtectionDomainAccess
+  493  0.02% 97.77%       544    1       544     1 300114 sun.nio.cs.ThreadLocalCoders$2
+  494  0.02% 97.79%       544    1       544     1 300425 java.util.HashMap$KeyIterator
+  495  0.02% 97.81%       544    1       544     1 300000 java.security.ProtectionDomain$3
+  496  0.02% 97.83%       544    1       544     1 300000 java.security.CodeSource
+  497  0.02% 97.85%       544    1       544     1 300265 java.io.FilePermission$1
+  498  0.02% 97.87%       544    1       544     1 300261 java.io.FilePermission
+  499  0.02% 97.89%       544    1       544     1 300257 sun.net.www.MessageHeader
+  500  0.02% 97.91%       544    1       544     1 300252 sun.net.www.protocol.file.FileURLConnection
+  501  0.02% 97.93%       544    1       544     1 300252 sun.net.www.URLConnection
+  502  0.02% 97.95%       544    1       544     1 300252 java.net.URLConnection
+  503  0.02% 97.97%       544    1       544     1 300431 java.util.ArrayList$Itr
+  504  0.02% 97.99%       544    1       544     1 300125 sun.nio.cs.Unicode
+  505  0.02% 98.01%       544    1       544     1 300125 sun.nio.cs.UTF_8
+  506  0.02% 98.03%       544    1       544     1 300232 java.security.Permissions
+  507  0.02% 98.05%       544    1       544     1 300232 java.security.PermissionCollection
+  508  0.02% 98.07%       544    1       544     1 300000 java.nio.charset.CoderResult$2
+  509  0.02% 98.09%       544    1       544     1 300000 sun.nio.cs.StreamDecoder
+  510  0.02% 98.11%       544    1       544     1 300225 java.nio.DirectLongBufferU
+  511  0.02% 98.13%       544    1       544     1 300225 java.nio.LongBuffer
+  512  0.02% 98.15%       544    1       544     1 300222 java.nio.DirectByteBuffer
+  513  0.02% 98.17%       544    1       544     1 300222 java.nio.MappedByteBuffer
+  514  0.02% 98.19%       544    1       544     1 300134 sun.nio.cs.UTF_8$Decoder
+  515  0.02% 98.21%       544    1       544     1 300222 sun.nio.ch.DirectBuffer
+  516  0.02% 98.23%       544    1       544     1 300220 sun.misc.PerfCounter$CoreCounters
+  517  0.02% 98.25%       544    1       544     1 300218 sun.misc.Perf
+  518  0.02% 98.26%       544    1       544     1 300216 sun.misc.Perf$GetPerfAction
+  519  0.02% 98.28%       544    1       544     1 300215 sun.misc.PerfCounter
+  520  0.02% 98.30%       544    1       544     1 300000 java.security.ProtectionDomain$Key
+  521  0.02% 98.32%       544    1       544     1 300000 java.security.Principal
+  522  0.02% 98.34%       544    1       544     1 300210 sun.nio.ByteBuffered
+  523  0.02% 98.36%       544    1       544     1 300196 java.lang.Package
+  524  0.02% 98.38%       544    1       544     1 300000 java.security.Principal[]
+  525  0.02% 98.40%       544    1       544     1 300000 java.util.HashSet
+  526  0.02% 98.42%       544    1       544     1 300192 sun.misc.URLClassPath$FileLoader$1
+  527  0.02% 98.44%       544    1       544     1 300000 sun.misc.URLClassPath
+  528  0.02% 98.46%       544    1       544     1 300192 sun.misc.Resource
+  529  0.02% 98.48%       544    1       544     1 300000 sun.net.www.protocol.jar.Handler
+  530  0.02% 98.50%       544    1       544     1 300000 sun.misc.Launcher$AppClassLoader
+  531  0.02% 98.52%       544    1       544     1 300000 java.lang.reflect.Array
+  532  0.02% 98.54%       544    1       544     1 300000 sun.misc.Launcher$AppClassLoader$1
+  533  0.02% 98.56%       544    1       544     1 300000 java.lang.SystemClassLoaderAction
+  534  0.02% 98.58%       544    1       544     1 300000 java.lang.invoke.ConstantCallSite
+  535  0.02% 98.60%       544    1       544     1 300155 java.security.PrivilegedActionException
+  536  0.02% 98.62%       544    1       544     1 300000 java.util.Locale
+  537  0.02% 98.64%       544    1       544     1 300000 java.lang.Class[]
+  538  0.02% 98.66%       544    1       544     1 300158 sun.misc.URLClassPath$FileLoader
+  539  0.02% 98.68%       520    5       520     5 300180 char[]
+  540  0.02% 98.70%       512   32       512    32 300072 java.lang.Object
+  541  0.02% 98.71%       512   32       512    32 300075 java.lang.Object
+  542  0.02% 98.73%       504   21       504    21 300435 java.lang.String
+  543  0.02% 98.75%       504   21       504    21 300433 java.lang.StringBuilder
+  544  0.02% 98.77%       480   10       480    10 300176 char[]
+  545  0.02% 98.79%       480   12       480    12 300207 java.lang.ref.Finalizer
+  546  0.02% 98.80%       480    4       480     4 300449 char[]
+  547  0.02% 98.82%       416    1       416     1 300349 java.lang.Object[]
+  548  0.02% 98.83%       416    4       416     4 300164 char[]
+  549  0.01% 98.85%       408   17       408    17 300098 java.lang.String
+  550  0.01% 98.86%       408   17       408    17 300095 java.lang.StringBuffer
+  551  0.01% 98.88%       392    4       392     4 300165 char[]
+  552  0.01% 98.89%       384   12       384    12 300142 java.io.File
+  553  0.01% 98.91%       384   12       384    12 300314 java.util.concurrent.ConcurrentHashMap$Node
+  554  0.01% 98.92%       384    6       384     6 300224 java.nio.DirectByteBuffer
+  555  0.01% 98.93%       352    5       352     5 300184 char[]
+  556  0.01% 98.94%       352    6       352     6 300244 char[]
+  557  0.01% 98.96%       352    5       352     5 300182 char[]
+  558  0.01% 98.97%       352    5       352     5 300186 char[]
+  559  0.01% 98.98%       336    6       336     6 300226 java.nio.DirectLongBufferU
+  560  0.01% 98.99%       328    5       328     5 300242 char[]
+  561  0.01% 99.01%       320    5       320     5 300185 java.net.URL
+  562  0.01% 99.02%       320    5       320     5 300174 java.net.URL
+  563  0.01% 99.03%       320    6       320     6 300003 char[]
+  564  0.01% 99.04%       320    5       320     5 300323 sun.nio.cs.SingleByte$Encoder
+  565  0.01% 99.05%       312   13       312    13 300083 java.lang.StringBuilder
+  566  0.01% 99.06%       312   13       312    13 300085 java.lang.String
+  567  0.01% 99.07%       312   13       312    13 300088 sun.misc.URLClassPath$3
+  568  0.01% 99.09%       296    5       296     5 300239 char[]
+  569  0.01% 99.10%       288   12       288    12 300140 java.lang.String
+  570  0.01% 99.11%       288   12       288    12 300139 char[]
+  571  0.01% 99.12%       288   12       288    12 300104 java.lang.StringBuilder
+  572  0.01% 99.13%       288   12       288    12 300148 java.lang.String
+  573  0.01% 99.14%       288   12       288    12 300146 java.lang.String
+  574  0.01% 99.15%       288   12       288    12 300138 java.lang.String
+  575  0.01% 99.16%       288    6       288     6 300236 char[]
+  576  0.01% 99.17%       288   12       288    12 300099 java.lang.String
+  577  0.01% 99.18%       288   12       288    12 300143 java.lang.StringBuffer
+  578  0.01% 99.19%       288   12       288    12 300137 char[]
+  579  0.01% 99.20%       288   12       288    12 300136 java.lang.String
+  580  0.01% 99.21%       288   12       288    12 300102 java.net.Parts
+  581  0.01% 99.22%       288   12       288    12 300093 java.lang.StringBuilder
+SITES END
